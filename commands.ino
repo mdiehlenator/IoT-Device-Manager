@@ -1,12 +1,18 @@
 #include "globals.h"
 
+struct mode {
+  char *name;
+  int value;
+  void (*poll)(int pin);
+};
 
-/*
-mode[0] = INPUT;
-mode[1] = OUTPUT;
-mode[2] = INPUT;
-mode[3] = OUTPUT;
-*/
+struct mode modes[] = {
+  {"digitalinput", INPUT, dummy_poll},
+  {"digitaloutput", OUTPUT, dummy_poll},
+  {"analoginput", INPUT, dummy_poll},
+  {"analogoutput", OUTPUT, dummy_poll},
+  
+};
 
 void ping(char *topic, char *message) {   
   DEBUG("PING message: %s\n", message, "","","");
@@ -17,21 +23,28 @@ void ping(char *topic, char *message) {
 }
 
 void pinmode(char *topic, char *message) {
-  int pin, value;
+  int pin, value, i;
+  
   DEBUG("PINMODE: %s %s\n", topic, message,"","");
 
   pin = String(topic[8]).toInt();
   value = String(message).toInt();
+  for (i=0; i<sizeof(modes); i++) {  
+    DEBUG("Finding pinmode for  (%s)\n", message, "", "","");
 
-  pin_mode[pin] = value;
+    if (strncmp(modes[i].name, message, strlen(modes[i].name)) == 0) {
+        break;
+    }
+  }
+  
+  pin_mode[pin] = i;
 
-  DEBUG("SETTING PINMODE #%i = %i\n", pin,value,"","");
-  pinMode(pin,value);
+  DEBUG("SETTING PINMODE #%i = %i\n", pin,i,"","");
+  pinMode(pin,modes[i].value);
  
   sprintf(buffer1, "%s%s/manager/%s/status/pinmode/%i", prefix, suffix, MAC, pin);
-  sprintf(buffer2, "%i", value);
 
-  mqtt.publish(buffer1, buffer1);
+  mqtt.publish(buffer1, message);
       
   return;
 }

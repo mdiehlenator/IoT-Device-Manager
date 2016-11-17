@@ -21,3 +21,8 @@ void do_poll() {
   
 }
 
+void dummy_poll(int pin) {
+
+  
+}
+

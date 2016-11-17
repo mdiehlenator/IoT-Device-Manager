@@ -15,11 +15,7 @@ struct command commands[] = {
   {"reboot", reboot},
   {"version", version},
   {"uptime", uptime},
-
-  
 };
-
-int command_count = sizeof(commands);
 
 void callback(char* topic, byte* payload, unsigned int length) {
   int i;
@@ -31,7 +27,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   DEBUG("I received a message for topic:\n(%s)\n[%s]\n(%s)\n", topic, buffer1, buffer2, "");
   
-  for (i=0; i<command_count; i++) {  
+  for (i=0; i<sizeof(commands); i++) {  
     if (strncmp(commands[i].name, buffer1, strlen(commands[i].name)) == 0) {
       DEBUG("Running it from for for (%i)\n", i, "", "","");
       return (commands[i].run)(buffer1,buffer2);
