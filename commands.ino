@@ -1,11 +1,12 @@
 #include "globals.h"
 
 
-
+/*
 mode[0] = INPUT;
 mode[1] = OUTPUT;
 mode[2] = INPUT;
 mode[3] = OUTPUT;
+*/
 
 void ping(char *topic, char *message) {   
   DEBUG("PING: %s\n", message, "","","");
@@ -24,8 +25,8 @@ void pinmode(char *topic, char *message) {
 
   pin_mode[pin] = value;
 
-  DEBUG("SETTING PINMODE #%i = %i\n", pin,mode[value],"","");
-  pinMode(pin,mode[value]);
+  DEBUG("SETTING PINMODE #%i = %i\n", pin,value,"","");
+  pinMode(pin,value);
  
   sprintf(buffer1, "%s%s/manager/%s/status/pinmode/%i", prefix, suffix, MAC, pin);
   sprintf(buffer2, "%i", value);
