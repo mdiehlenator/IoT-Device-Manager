@@ -1,5 +1,7 @@
 # Editors....
 *.swp
+*.ignore
+config.h.local
 
 # Compiled source #
 ###################
