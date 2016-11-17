@@ -21,7 +21,6 @@ void setup() {
   setup_serial();
 #endif
 
-init_callback();
   setup_wifi();
   setup_mqtt();
   setup_display();

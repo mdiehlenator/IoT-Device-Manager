@@ -10,9 +10,9 @@ mode[3] = OUTPUT;
 
 void ping(char *topic, char *message) {   
   DEBUG("PING message: %s\n", message, "","","");
-  sprintf(buffer1, "%s%s/manager/%s/pong(%s)", prefix,suffix,MAC,IP);
+  sprintf(buffer1, "%s%s/manager/%s/pong", prefix,suffix,MAC,IP);
   DEBUG("PING publish: (%s)\n", buffer1, "","","");
-  mqtt.publish(buffer1, buffer1);
+  mqtt.publish(buffer1, IP);
   return;
 }
 
