@@ -22,7 +22,7 @@ void init_callback() {
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
-  int i, found;
+  int i;
   
   strcpy(buffer1, topic+strlen(prefix)+strlen(suffix)+19);
 
@@ -33,25 +33,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
   
   for (i=0; i<command_count; i++) {  
     if (strncmp(commands[i].name, buffer1, strlen(commands[i].name)) == 0) {
-      found = i;
-      i=100000;
-DEBUG("Running it from for for (%i)\n", found, "", "","");
+      DEBUG("Running it from for for (%i)\n", i, "", "","");
       return (commands[i].run)(buffer1,buffer2);
     }
-  }
-  
-  DEBUG("Running it from switch for (%i)\n", found, "", "","");
-
-  switch (found) {
-    case 0: return ping(buffer1, buffer2);
-    case 1: return pinmode(buffer1, buffer2);
-    case 2: return digitalwrite(buffer1, buffer2);
-    case 3: return digitalread(buffer1, buffer2);
-    case 4: return analogread(buffer1, buffer2);
-    case 5: return analogwrite(buffer1, buffer2);
-    case 6: return reboot(buffer1, buffer2);
-    case 7: return version(buffer1, buffer2);
-    case 8: return uptime(buffer1, buffer2);    
   }
 
   DEBUG("But I can not match it.  (%s) (%s)\n", buffer1, buffer2, "", "");
