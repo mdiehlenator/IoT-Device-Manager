@@ -18,7 +18,16 @@ void init_polling() {
 }
 
 void do_poll() {
-  
+  int i;
+
+  for (i=0; i<MAXPINS; i++) {
+    if (pin_mode[i] == -1) { continue; }
+
+      DEBUG("Running it from for for (%i)\n", i, "", "","");
+
+  }
+
+  delay(1000);
 }
 
 void dummy_poll(int pin) {
