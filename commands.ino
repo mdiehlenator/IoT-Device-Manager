@@ -1,29 +1,41 @@
 #include "globals.h"
 
-struct mode {
+struct command {
   char *name;
-  int value;
-  void (*poll)(int pin);
+  void (*run)(char *topic, char *message);
 };
 
-struct mode modes[] = {
-  {"digitalinput", INPUT, poll_digitalinput},
-  {"digitaloutput", OUTPUT, dummy_poll},
-  {"analoginput", INPUT, poll_analoginput},
-  {"analogoutput", OUTPUT, dummy_poll},
+struct command commands[] = {
+#ifdef FEATURE_CORE  {"ping", ping},
+  {"reboot", reboot},
+  {"version", version},
+  {"uptime", uptime},
+#endif
+  {"pinmode", pinmode},
+  {"digitalwrite", digitalwrite},
+  {"digitalread", digitalread},
+  {"analogread", analogread},
+  {"analogwrite", analogwrite},
+
 };
 
 
+void callback(char* topic, byte* payload, unsigned int length) {
+  int i;
+  
+  strcpy(buffer1, topic+strlen(prefix)+strlen(suffix)+19);
 
+  memcpy(buffer2, payload, length);
+  buffer2[length] = '\0';
 
-void  pin_value(int pin, int value) {
-  pin_lastvalue[pin] = value;
+  DEBUG("I received a message for topic:\n(%s)\n[%s]\n(%s)\n", topic, buffer1, buffer2, "");
+  
+  for (i=0; i<sizeof(commands); i++) {  
+    if (strncmp(commands[i].name, buffer1, strlen(commands[i].name)) == 0) {
+      DEBUG("Running it from for for (%i)\n", i, "", "","");
+      return (commands[i].run)(buffer1,buffer2);
+    }
+  }
 
-  sprintf(buffer1, "%s%s/manager/%s/status/pinvalue/%i", prefix, suffix, MAC, pin);
-  sprintf(buffer2, "%i", value);
-
-  mqtt.publish(buffer1, buffer2); 
-
-  return;
+  DEBUG("But I can not match it.  (%s) (%s)\n", buffer1, buffer2, "", "");
 }
-

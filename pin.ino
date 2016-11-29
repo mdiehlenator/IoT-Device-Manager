@@ -1,3 +1,17 @@
+struct mode {
+  char *name;
+  int value;
+  void (*poll)(int pin);
+};
+
+struct mode modes[] = {
+  {"digitalinput", INPUT, poll_digitalinput},
+  {"digitaloutput", OUTPUT, dummy_poll},
+  {"analoginput", INPUT, poll_analoginput},
+  {"analogoutput", OUTPUT, dummy_poll},
+};
+
+
 void pinmode(char *topic, char *message) {
   int pin, value, i;
   int found = 0;

@@ -26,7 +26,7 @@ extern int pin_intervals[MAXPINS];
 extern int pin_lastpoll[MAXPINS];
 
 extern void init_callback();
-
+extern struct command commands[];
 void init_polling();
 extern void dummy_poll(int pin);
 
