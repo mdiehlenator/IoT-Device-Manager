@@ -58,7 +58,7 @@ void text(char *topic, char *message) {
   y = String(topic[9]).toInt()*100 + String(topic[10]).toInt()*10 + String(topic[11]).toInt();
 
   
-  display.drawString(x,y,message);
+  display.drawStringMaxWidth(x,y,64-x,message);
   display.display();
 }
 

@@ -8,7 +8,6 @@
 char buffer1[50];
 char buffer2[50];
 
-
 void setup() {
 
 #ifdef DEBUGGING
