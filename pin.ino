@@ -105,3 +105,25 @@ void analogwrite(char *topic, char *message) {
   return;
 }
 
+void  poll_digitalinput(int pin) {
+  int value;
+  
+  DEBUG("poll_digitalinput from for (%i)\n", pin, "", "","");
+  value = digitalRead(pin);
+
+  if (value != pin_lastvalue[pin]) {
+    pin_value(pin, value);
+  }
+}
+
+void  poll_analoginput(int pin) {
+  int value;
+  
+  DEBUG("poll_analoginput from for (%i)\n", pin, "", "","");
+  value = analogRead(A0);
+
+  if (value != pin_lastvalue[pin]) {
+    pin_value(pin, value);
+  }
+}
+

@@ -6,16 +6,19 @@ struct command {
 };
 
 struct command commands[] = {
-#ifdef FEATURE_CORE  {"ping", ping},
+#ifdef FEATURE_CORE
+  {"ping", ping},
   {"reboot", reboot},
   {"version", version},
   {"uptime", uptime},
 #endif
+#ifdef FEATURE_PIN
   {"pinmode", pinmode},
   {"digitalwrite", digitalwrite},
   {"digitalread", digitalread},
   {"analogread", analogread},
   {"analogwrite", analogwrite},
+#endif
 
 };
 

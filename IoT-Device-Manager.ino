@@ -23,12 +23,18 @@ void setup() {
 
   setup_wifi();
   setup_mqtt();
+#ifdef FEATURE_SSD1306
   setup_display();
+#endif
 }
 
 void loop() {
   update_mqtt();
+  
+#ifdef FEATURE_SSD1306
   update_display();
+#endif
+
   do_poll();
   yield();
 }
