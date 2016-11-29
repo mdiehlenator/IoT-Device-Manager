@@ -56,7 +56,19 @@ void text(char *topic, char *message) {
   
   x = String(topic[5]).toInt()*100 + String(topic[6]).toInt()*10 + String(topic[7]).toInt();
   y = String(topic[9]).toInt()*100 + String(topic[10]).toInt()*10 + String(topic[11]).toInt();
+
   
   display.drawString(x,y,message);
+  display.display();
+}
+
+void setfont(char *topic, char *message) {
+  int f;
+
+  DEBUG("Setfont: (%s) (%s)\n", topic, message,0,0);
+  
+  f = String(message).toInt();
+  
+  display.setFont("ArialMT_Plain_10");
   display.display();
 }

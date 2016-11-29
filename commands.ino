@@ -23,6 +23,7 @@ struct command commands[] = {
 #ifdef FEATURE_SSD1306
   {"text", text},
   {"clearscreen", clearscreen},
+  {"setfont", setfont},
 #endif
 
 };
