@@ -45,7 +45,7 @@ void pinmode(char *topic, char *message) {
 
 void digitalwrite(char *topic, char *message) {
   int pin, value;
-  Serial.printf("digitalwrite: %s\n", message);
+  DEBUG("digitalwrite: %s\n", message,0,0,0);
 
   pin = String(topic[13]).toInt()*10 + String(topic[14]).toInt();
   value = String(message).toInt();
@@ -122,7 +122,7 @@ void  poll_analoginput(int pin) {
   DEBUG("poll_analoginput from for (%i)\n", pin, "", "","");
   value = analogRead(A0);
 
-  if (value != pin_lastvalue[pin]) {
+  if ((value != pin_lastvalue[pin]) || (pin_lastpoll[pin]+pin_maxinterval[pin] < wallclock)) {
     pin_value(pin, value);
   }
 }

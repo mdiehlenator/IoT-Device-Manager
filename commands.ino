@@ -20,6 +20,11 @@ struct command commands[] = {
   {"analogwrite", analogwrite},
 #endif
 
+#ifdef FEATURE_SSD1306
+  {"text", text},
+  {"clearscreen", clearscreen},
+#endif
+
 };
 
 

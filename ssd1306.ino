@@ -16,7 +16,7 @@ const char* test[] = {
 void update_display() {
   display.clear();
 
-
+return;
   display.setLogBuffer(5, 30);
 
   for (uint8_t i = 0; i < 7; i++) {
@@ -35,12 +35,28 @@ void update_display() {
    
 }
 
-
 void  setup_display() {
   display.init();
   display.flipScreenVertically();
   display.setContrast(255);
-  Serial.println("Display is connected");
+  DEBUG("Display is connected",0,0,0,0);
   display.clear();
+  display.display();
+}
+
+void clearscreen(char *topic, char *message) {
+  display.clear();  display.display();
+
+}
+
+void text(char *topic, char *message) {
+  int x,y;
+
+  DEBUG("Display text: (%s) (%s)\n", topic, message,0,0);
+  
+  x = String(topic[5]).toInt()*100 + String(topic[6]).toInt()*10 + String(topic[7]).toInt();
+  y = String(topic[9]).toInt()*100 + String(topic[10]).toInt()*10 + String(topic[11]).toInt();
+  
+  display.drawString(x,y,message);
   display.display();
 }

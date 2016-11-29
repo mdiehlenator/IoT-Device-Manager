@@ -13,11 +13,12 @@ char buffer2[50];
 PubSubClient mqtt(espclient);
 
 void setup() {
-  init_polling();
 
 #ifdef DEBUGGING
   setup_serial();
 #endif
+
+  init_polling();
 
   setup_wifi();
   setup_mqtt();
