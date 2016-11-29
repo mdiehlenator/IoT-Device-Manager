@@ -10,7 +10,7 @@
 #define DEBUG(M,A,B,C,D)   Serial.printf(M,A,B,C,D)
 #endif
 
-
+extern WiFiClient espclient;
 extern char IP[16];
 extern char MAC[18];
 

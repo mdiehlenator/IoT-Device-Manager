@@ -1,5 +1,8 @@
 #include "globals.h"
 
+#include <WiFiClient.h>
+WiFiClient espclient;
+
 char IP[16] = "";
 char MAC[18] = "";
 uint8 MAC_NVRAM[7];
