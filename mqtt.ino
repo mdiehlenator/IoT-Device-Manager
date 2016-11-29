@@ -5,7 +5,7 @@ void reconnect() {
   while (!mqtt.connected()) {
    Serial.println("Not connected to mqtt\n");
    
-   if (mqtt.connect("ESP8266mqtt")) {
+   if (mqtt.connect("ESP8266mqtt","mdiehl3", "liebchen")) {
          Serial.println("Connected to mqtt\n");
    } else {
           Serial.printf("Connection failed: %i\n", mqtt.state());

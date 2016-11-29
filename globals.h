@@ -20,7 +20,7 @@ extern const char* prefix;
 extern int mode[4];
 
 extern int pin_mode[MAXPINS];
-extern int pin_values[MAXPINS];
+extern int pin_lastvalue[MAXPINS];
 extern int pin_intervals[MAXPINS];
 extern int pin_lastpoll[MAXPINS];
 
