@@ -1,11 +1,14 @@
 
 void reconnect() {
+
+  if (WiFi.status() != WL_CONNECTED) { return; }
+  
   Serial.printf("Connection status: %i\n", mqtt.state());
 
   while (!mqtt.connected()) {
    Serial.println("Not connected to mqtt\n");
    
-   if (mqtt.connect("ESP8266mqtt","mdiehl3", "liebchen")) {
+   if (mqtt.connect("ESP8266mqtt",mqtt_user, mqtt_passwd)) {
          Serial.println("Connected to mqtt\n");
    } else {
           Serial.printf("Connection failed: %i\n", mqtt.state());
@@ -33,6 +36,8 @@ void update_mqtt() {
 }
 
 void setup_mqtt() {
+  if (WiFi.status() != WL_CONNECTED) { return; }
+
   mqtt.setServer(mqtt_server, mqtt_port);
   mqtt.setCallback(callback);
 }

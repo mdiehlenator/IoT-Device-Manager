@@ -7,14 +7,15 @@ struct command {
 
 struct command commands[] = {
   {"ping", ping},
+  {"reboot", reboot},
+  {"version", version},
+  {"uptime", uptime},
   {"pinmode", pinmode},
   {"digitalwrite", digitalwrite},
   {"digitalread", digitalread},
   {"analogread", analogread},
   {"analogwrite", analogwrite},
-  {"reboot", reboot},
-  {"version", version},
-  {"uptime", uptime},
+
 };
 
 void callback(char* topic, byte* payload, unsigned int length) {
