@@ -1,6 +1,5 @@
 #include <Wire.h>
 #include <ESP8266WiFi.h>
-#include <PubSubClient.h>
 #include <Stream.h>
 
 #include "globals.h"
@@ -9,8 +8,6 @@
 char buffer1[50];
 char buffer2[50];
 
-
-PubSubClient mqtt(espclient);
 
 void setup() {
 

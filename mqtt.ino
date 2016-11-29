@@ -1,3 +1,6 @@
+#include <PubSubClient.h>
+
+PubSubClient mqtt(espclient);
 
 void reconnect() {
 
@@ -25,7 +28,9 @@ void reconnect() {
   Serial.printf("Publishing: %s %s\n", buffer1, MAC);
 }
 
-
+void publish(char *t, char *m) {
+    mqtt.publish(t, m); 
+}
 void update_mqtt() {
   
   mqtt.loop(); 

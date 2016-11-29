@@ -2,7 +2,7 @@ void ping(char *topic, char *message) {
   DEBUG("PING message: %s\n", message, "","","");
   sprintf(buffer1, "%s%s/manager/%s/pong", prefix,suffix,MAC,IP);
   DEBUG("PING publish: (%s)\n", buffer1, "","","");
-  mqtt.publish(buffer1, IP);
+  publish(buffer1, buffer2); 
   return;
 }
 
@@ -18,7 +18,7 @@ void version(char *topic, char *message) {
 
   Serial.printf("VERSION: %s => %s", buffer1, buffer2);
 
-  mqtt.publish(buffer1, buffer2);
+  publish(buffer1, buffer2); 
 
 }
 
@@ -28,7 +28,7 @@ void uptime(char *topic, char *message) {
 
   DEBUG("UPTIME: %i", millis()/1000, "", "", "");
 
-  mqtt.publish(buffer1, buffer2);
+  publish(buffer1, buffer2); 
 }
 
 
@@ -39,7 +39,7 @@ void  pin_value(int pin, int value) {
   sprintf(buffer1, "%s%s/manager/%s/status/pinvalue/%i", prefix, suffix, MAC, pin);
   sprintf(buffer2, "%i", value);
 
-  mqtt.publish(buffer1, buffer2); 
+  publish(buffer1, buffer2); 
 
   return;
 }
