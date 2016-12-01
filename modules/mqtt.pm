@@ -27,6 +27,11 @@ sub	startup {
 	my($topic, $message) = @_;
 	my($t, $cv);
 
+	### @@@ Man, this needs to be separated.
+	print "Subscribing to owntracks/#\n";
+	$cv = $mqtt->subscribe("topic" => "owntracks/#", "callback" => sub {return &callback; } );
+	$cv->recv;
+
 	$t = $main::config{MQTT_PREFIX} . "/#";
 	print "Subscribing to $t\n";
 	$cv = $mqtt->subscribe("topic" => $t, "callback" => sub {return &callback; } );
