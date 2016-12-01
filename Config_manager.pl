@@ -9,6 +9,11 @@ require "./modules/device.pm";
 require "./modules/pin.pm";
 
 $prefix = utils::get_prefix();
+$suffix = utils::get_prefix();
+$mqtt_host = utils::get_prefix();
+$mqtt_port= utils::get_prefix();
+$mqtt_user = utils::get_prefix();
+$mqtt_passwd = utils::get_prefix();
 
 print "Using $prefix for message prefixes.\n";
  

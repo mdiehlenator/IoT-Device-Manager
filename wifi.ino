@@ -3,6 +3,9 @@
 #include <WiFiClient.h>
 WiFiClient espclient;
 
+const char* ssid     = WIFI_SSID;
+const char* password = WIFI_PASSWORD;
+
 char IP[16] = "";
 char MAC[18] = "";
 uint8 MAC_NVRAM[7];
