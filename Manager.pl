@@ -10,11 +10,9 @@ require "./modules/pin.pm";
 
 utils::get_config();
 
-print "Using $config{MQTT_PREFIX} for message prefixes.\n";
- 
 #utils::read_devices();
 
-protocol::do_connect();
+mqtt::do_connect();
 
 #protocol::run();
 
