@@ -7,7 +7,7 @@ $modenumber{"analoginput"} = 2;
 $modenumber{"analogoutput"} = 3;
 
 sub     do_connect {
-	$mqtt = Net::MQTT::Simple->new("test.mosquitto.org");
+	$mqtt = Net::MQTT::Simple->new($main::config{MQTT_SERVER}, $main::config{MQTT_PORT}, $main::config{MQTT_USER}, $main::config{MQTT_PASSWORD});
 
 	print "Connected\n";
 

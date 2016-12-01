@@ -3,7 +3,7 @@
 use Net::MQTT::Simple;
 
 require "./modules/utils.pm";
-require "./modules/protocol.pm";
+require "./modules/mqtt.pm";
 require "./modules/raw.pm";
 require "./modules/device.pm";
 require "./modules/pin.pm";
@@ -12,13 +12,11 @@ utils::get_config();
 
 print "Using $config{MQTT_PREFIX} for message prefixes.\n";
  
-exit;
-
-utils::read_devices();
+#utils::read_devices();
 
 protocol::do_connect();
 
-protocol::run();
+#protocol::run();
 
 ################################################################
 
