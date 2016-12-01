@@ -31,6 +31,10 @@ sub	process {
 
 	print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
 	
+	if ($h->{from} eq "manager") {
+		return;
+	}
+
 }
 
 
