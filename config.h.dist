@@ -1,0 +1,14 @@
+#define FEATURE_CORE (1)
+#define FEATURE_PIN (1)
+#define FEATURE_SSD1306 (1)
+
+#define WIFI_SSID "My_Wifi_SSID"
+#define WIFI_PASSWORD "Wifi_Passwd"
+
+
+#define MQTT_SERVER "host.example.com"
+#define MQTT_PORT 8883
+#define MQTT_USER "username"
+#define MQTT_PASSWORD "password"
+#define MQTT_PREFIX "Default"
+#define MQTT_SUFFIX "-devices"
