@@ -1,12 +1,14 @@
 #!/usr/bin/perl
-
+use EV;
+use AnyEvent;
 use Net::MQTT::Simple;
 
 require "./modules/utils.pm";
 require "./modules/mqtt.pm";
 require "./modules/raw.pm";
 require "./modules/device.pm";
-require "./modules/pin.pm";
+
+STDOUT->autoflush;
 
 utils::get_config();
 
@@ -16,7 +18,21 @@ mqtt::do_connect();
 
 #protocol::run();
 
+
+while (1) {
+	print "X:\n";
+	AnyEvent->condvar->recv; # wake up current and all future recv's
+}
+
 ################################################################
+
+sub	process {
+	my ($h) = @_;
+
+	print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
+	
+}
+
 
 sub	dispatch {
 	my($topic, $message) = @_;

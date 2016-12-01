@@ -30,7 +30,7 @@ void reconnect() {
   Serial.printf("Subscribing to %s.\n", buffer1, suffix);
   mqtt.subscribe(buffer1);
   
-  sprintf(buffer1, "%s%s/manager/boot", prefix, suffix);
+  sprintf(buffer1, "%s%s/manager/%s/boot", prefix, suffix, MAC);
   mqtt.publish(buffer1, MAC);
   Serial.printf("Publishing: %s %s\n", buffer1, MAC);
 }
@@ -38,6 +38,7 @@ void reconnect() {
 void publish(char *t, char *m) {
     mqtt.publish(t, m); 
 }
+
 void update_mqtt() {
   
   mqtt.loop(); 
