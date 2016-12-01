@@ -32,7 +32,13 @@ struct command commands[] = {
 void callback(char* topic, byte* payload, unsigned int length) {
   int i;
   
-  strcpy(buffer1, topic+strlen(prefix)+strlen(suffix)+19);
+  //strcpy(buffer1, topic + strlen(prefix) + strlen(suffix) + 19);  // Need to skip the prefix, the suffix, and the mac.  Then we need to skip the from field to get to the command.
+  i =   strlen(prefix) + strlen(suffix) + 19;  // Need to skip the prefix, the suffix, and the mac.  Then we need to skip the from field to get to the command.
+
+  char *pos = strchr(topic+i, '/');
+  strcpy(buffer1, pos+1);
+
+   DEBUG("I calculated a message for topic:\n(%s)\n[%s]\n(%s)\n", topic, buffer1, buffer2, "");
 
   memcpy(buffer2, payload, length);
   buffer2[length] = '\0';
