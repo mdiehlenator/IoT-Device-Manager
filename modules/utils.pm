@@ -1,16 +1,17 @@
 package utils;
 
-sub	get_prefix {
+sub	get_config {
 	local(*FILE);
 
 	open FILE, "./config.h";
 	while (<FILE>) {
-		if ($_ =~ m/const char\* prefix = "(\w+)";/) {
-			return $1;
+		if ($_ =~ m/#define\s+(\S+)\s+(\S+)/) {
+			my(@a) = ($1, $2);
+			$a[1] =~ s/"//g;
+
+			$main::config{$a[0]} = $a[1];
 		}
 	}
-
-	return "Default";
 }
 
 sub	read_devices {

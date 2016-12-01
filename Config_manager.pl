@@ -8,15 +8,12 @@ require "./modules/raw.pm";
 require "./modules/device.pm";
 require "./modules/pin.pm";
 
-$prefix = utils::get_prefix();
-$suffix = utils::get_prefix();
-$mqtt_host = utils::get_prefix();
-$mqtt_port= utils::get_prefix();
-$mqtt_user = utils::get_prefix();
-$mqtt_passwd = utils::get_prefix();
+utils::get_config();
 
-print "Using $prefix for message prefixes.\n";
+print "Using $config{MQTT_PREFIX} for message prefixes.\n";
  
+exit;
+
 utils::read_devices();
 
 protocol::do_connect();
