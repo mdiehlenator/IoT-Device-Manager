@@ -1,5 +1,12 @@
 #include <PubSubClient.h>
 
+const char* mqtt_server = MQTT_SERVER;
+int mqtt_port = MQTT_PORT;
+const char* mqtt_user = MQTT_USER;
+const char* mqtt_passwd = MQTT_PASSWORD;
+const char prefix[16] = MQTT_PREFIX;
+const char suffix[16] = MQTT_SUFFIX;
+
 PubSubClient mqtt(espclient);
 
 void reconnect() {
