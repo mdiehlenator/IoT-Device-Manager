@@ -2,6 +2,7 @@
 *.swp
 *.ignore
 config.h.local
+config.h
 
 # Compiled source #
 ###################
