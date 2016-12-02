@@ -8,7 +8,7 @@ sub     do_connect {
 
 	print "Connected\n";
 
-	startup("", "");
+	startup();
 
 	print "Announced\n";
 }
@@ -24,7 +24,6 @@ sub     publish {
 }
 
 sub	startup {
-	my($topic, $message) = @_;
 	my($t, $cv);
 
 	### @@@ Man, this needs to be separated.
