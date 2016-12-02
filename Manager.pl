@@ -20,7 +20,6 @@ mqtt::do_connect();
 
 
 while (1) {
-	print "X:\n";
 	AnyEvent->condvar->recv; # wake up current and all future recv's
 }
 
