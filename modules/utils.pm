@@ -16,6 +16,7 @@ sub	get_config {
 
 sub	read_devices {
 	local(*DIR);
+	my($device);
 
 	opendir DIR, "./devices";
 	while (readdir(DIR)) {
@@ -23,7 +24,8 @@ sub	read_devices {
 		if ($_ eq "..") { next; }
 		if ($_ =~ m/\.swp/) { next; }
 
-		read_device($_);
+		$device = read_device($_);
+		add_device($device);
 	}
 }
 
@@ -31,9 +33,12 @@ sub	read_device {
 	my($file) = @_;
 	my($line, $device, $var, $val);
 	local(*FILE);
+	my(%device);
 
 	$device = $file;
 	$device =~ s/\.conf//;
+
+	$device{id} = $device;
 
 	print "Reading: ./devices/${file}\n";
 
@@ -42,21 +47,32 @@ sub	read_device {
 		chomp($_);
 
 		if ($_ eq "") { next; }
-		
-		if (m/^pin(\d+):/) {
-			$_ =~ s/^pin(\d+)://;
-			parse_line($device, $1, $_);
-		} else {
-			($var, $val) = split(/\s*=\s*/);
-			$main::device{$device}{$var} = $val;
-			print "\tSetting: ($var) = ($val)\n";
 
-			if ($var eq "name") {
-				$main::mac{$val} = $device;
-			}
+		if ($_ =~ m/feature/) {
+			return \%device;
 		}
+		
+		($var, $val) = split(/\s*=\s*/);
+
+		$device{$var} = $val;
 	}
+
+	return \%device;
 }
+
+sub	add_device {
+	my($device) = @_;
+
+	$main::devices[$main::device_count] = $device;
+	$main::device_by_id{$device->{id}} = $main::device_count;
+	$main::device_by_name{$device->{name}} = $main::device_count;
+
+	$main::device_count++;
+}
+
+return 1;
+
+__DATA__
 
 sub	parse_line {
 	my($device, $pin, $line) = @_;

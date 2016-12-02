@@ -8,11 +8,17 @@ require "./modules/mqtt.pm";
 require "./modules/raw.pm";
 require "./modules/device.pm";
 
+$device_count = 0;
+
 STDOUT->autoflush;
 
 utils::get_config();
 
-#utils::read_devices();
+utils::read_devices();
+
+print "Registered $device_count devices.\n";
+
+print "==============================================================\n";
 
 mqtt::do_connect();
 
@@ -37,6 +43,7 @@ sub	process {
 }
 
 
+__DATA__
 sub	dispatch {
 	my($topic, $message) = @_;
 	my($f);
