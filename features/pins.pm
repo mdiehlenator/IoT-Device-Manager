@@ -1,5 +1,9 @@
 package pins;
 
+BEGIN {
+	$main::functions{esp8266}{pinmode} = pins::pinmode;
+}
+
 sub	parse_config {
 	my($fh, $device) = @_;
 	my($pin, $pin_number);

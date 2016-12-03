@@ -15,6 +15,8 @@ STDOUT->autoflush;
 
 utils::get_config();
 
+require "./features/core.pm";
+
 utils::read_devices();
 
 print "Registered $device_count devices.\n";
