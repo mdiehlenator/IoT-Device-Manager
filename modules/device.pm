@@ -1,5 +1,8 @@
 package device;
 
+$device_count = 0;
+
+
 sub	read_devices {
 	local(*DIR);
 	my($device);
@@ -52,11 +55,11 @@ sub	read_device {
 sub	add_device {
 	my($device) = @_;
 
-	$main::devices[$main::device_count] = $device;
-	$main::device_by_id{$device->{id}} = $main::device_count;
-	$main::device_by_name{$device->{name}} = $main::device_count;
+	$devices[$device_count] = $device;
+	$device_by_id{$device->{id}} = $device_count;
+	$device_by_name{$device->{name}} = $device_count;
 
-	$main::device_count++;
+	$device_count++;
 
 	read_device_template($device->{type});
 }
@@ -66,6 +69,20 @@ sub	read_device_template {
 
 	print "Reading template for $type\n";
 
+}
+
+sub	find_device {
+	my($which) = @_;
+
+	if (defined $device_by_id{$which}) {
+		return $devices[$device_by_id{$which}];
+	}
+
+	if (defined $device_by_name{$which}) {
+		return $devices[$device_by_name{$which}];
+	}
+
+	return "";
 }
 
 return 1;
