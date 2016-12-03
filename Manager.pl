@@ -40,6 +40,10 @@ sub	process {
 		return;
 	}
 
+	if ($functions{core}{$h->{command}}) {
+		&{$functions{core}{$h->{command}}}($h);
+		return;
+	}
 }
 
 
