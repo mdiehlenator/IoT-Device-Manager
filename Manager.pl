@@ -2,6 +2,7 @@
 use EV;
 use AnyEvent;
 use Net::MQTT::Simple;
+use FileHandle;
 
 require "./modules/utils.pm";
 require "./modules/mqtt.pm";
@@ -21,9 +22,6 @@ print "Registered $device_count devices.\n";
 print "==============================================================\n";
 
 mqtt::do_connect();
-
-#protocol::run();
-
 
 while (1) {
 	AnyEvent->condvar->recv; # wake up current and all future recv's

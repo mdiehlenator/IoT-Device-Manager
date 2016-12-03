@@ -1,10 +1,10 @@
 package utils;
 
 sub	get_config {
-	local(*FILE);
+	my($fh);
 
-	open FILE, "./config.h";
-	while (<FILE>) {
+	$fh = FileHandle->new("./config.h", "r");
+	while (<$fh>) {
 		if ($_ =~ m/#define\s+(\S+)\s+(\S+)/) {
 			my(@a) = ($1, $2);
 			$a[1] =~ s/"//g;
@@ -31,9 +31,8 @@ sub	read_devices {
 
 sub	read_device {
 	my($file) = @_;
-	my($line, $device, $var, $val);
-	local(*FILE);
-	my(%device);
+	my($fh, $line, $device, $var, $val);
+	my(%device, $feature);
 
 	$device = $file;
 	$device =~ s/\.conf//;
@@ -42,14 +41,18 @@ sub	read_device {
 
 	print "Reading: ./devices/${file}\n";
 
-	open FILE, "./devices/${file}";
-	while (<FILE>) {
+	$fh = FileHandle->new("./devices/${file}", "r");
+	while (<$fh>) {
 		chomp($_);
 
 		if ($_ eq "") { next; }
 
-		if ($_ =~ m/feature/) {
-			return \%device;
+		if ($_ =~ m/feature\s+(\S+)/) {
+			$feature = $1;
+			require "./features/${feature}.pm";
+			&{$feature . "::parse_config"}($fh, $device);
+
+			$device{$key}->{$o};
 		}
 		
 		($var, $val) = split(/\s*=\s*/);
@@ -68,28 +71,15 @@ sub	add_device {
 	$main::device_by_name{$device->{name}} = $main::device_count;
 
 	$main::device_count++;
+
+	read_device_template($device->{type});
 }
 
-return 1;
+sub	read_device_template {
+	my($type) = @_;
 
-__DATA__
+	print "Reading template for $type\n";
 
-sub	parse_line {
-	my($device, $pin, $line) = @_;
-	my(@terms, $term, $var, $val);
-
-	@terms = split(/;/);
-
-	foreach $term (@terms) {
-		($var,$val) = split("=", $term);
-
-		print "Pin: $device / $pin $var = $val\n";
-		$main::pin{$device}{$pin}{$var} = $val;
-
-		if ($var eq "name") {
-			$main::pinnumber{$val} = $pin;
-		}
-	}
 }
 
 return 1;
