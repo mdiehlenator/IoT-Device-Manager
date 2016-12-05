@@ -40,13 +40,32 @@ sub	process {
 		return;
 	}
 
+	$from_device = device::find_device($h->{from});
+	$to_device = device::find_device($h->{to});
+
+	if ($from_device->{id} eq $h->{from}) { $from_id = 1;}
+	if ($to_device->{id} eq $h->{to}) { $to_id = 1;}
+
+	if (($from_id == 1) && !($h->{to} ne "manager")) { protocol_error($h); }	# No one but the manager should be receiving messages from devices directly.
+	if (($to_id ==1) && $h->{from} ne "managaer") { protocol_error($h); }		# No one but the manager should be sending messages to devices directly.
+
 	# Then, let's check the platform-specific functions.
 	if (($h->{to} eq "manager") and (device::find_device($h->{from}) ne "")) {
 		my $device = device::find_device($h->{from});
 		print "The device, $h->{from} is a $device->{type} named $device->{name}\n";
-		return;
+
+		if ($functions{$device->{type}}{$h->{command}}) {
+		&{$functions{$device->{type}}{$h->{command}}}($h);
+	}
+
 	}
 
 	# Finally, let's try the device-specific (feature?) functions.
+}
+
+sub	protocol_error {
+	my($h) = @_;
+
+	print "Protocol Error\n";
 }
 
