@@ -9,8 +9,6 @@ sub     do_connect {
 	print "Connected\n";
 
 	startup();
-
-	print "Announced\n";
 }
 
 sub     publish {

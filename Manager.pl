@@ -17,7 +17,7 @@ require "./features/core.pm";
 
 device::read_devices();
 
-print "Registered $device_count devices.\n";
+print "Registered $device::device_count devices.\n";
 
 print "==============================================================\n";
 
@@ -34,11 +34,6 @@ sub	process {
 
 	print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
 	
-	# I _THINK_ we can ignore messages that we send...
-	if ($h->{from} eq "manager") {
-		return;
-	}
-
 	# Let's check the core functions first.
 	if ($functions{core}{$h->{command}}) {
 		&{$functions{core}{$h->{command}}}($h);

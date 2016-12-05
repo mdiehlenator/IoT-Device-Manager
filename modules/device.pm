@@ -45,8 +45,11 @@ sub	read_device {
 		}
 		
 		($var, $val) = split(/\s*=\s*/);
-
 		$device{$var} = $val;
+
+		if ($var eq "type") {
+			require "./device_definitions/$val\.pm";
+		}
 	}
 
 	return \%device;
@@ -60,15 +63,6 @@ sub	add_device {
 	$device_by_name{$device->{name}} = $device_count;
 
 	$device_count++;
-
-	read_device_template($device->{type});
-}
-
-sub	read_device_template {
-	my($type) = @_;
-
-	print "Reading template for $type\n";
-
 }
 
 sub	find_device {
