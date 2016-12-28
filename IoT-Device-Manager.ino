@@ -23,6 +23,9 @@ void setup() {
   setup_display();
 #endif
 
+#ifdef FEATURE_DTHXX
+  setup_dthxx();
+#endif
 }
 
 void loop() {
@@ -30,6 +33,10 @@ void loop() {
   
 #ifdef FEATURE_SSD1306
   update_display();
+#endif
+
+#ifdef FEATURE_DTHXX
+  update_dthxx();
 #endif
 
   do_poll();

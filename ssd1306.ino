@@ -1,3 +1,5 @@
+#ifdef FEATURE_SSD1306
+
 #include "globals.h"
 #include "SSD1306.h"
 //#include "SSD1306Brzo.h"
@@ -57,7 +59,8 @@ void text(char *topic, char *message) {
   x = String(topic[5]).toInt()*100 + String(topic[6]).toInt()*10 + String(topic[7]).toInt();
   y = String(topic[9]).toInt()*100 + String(topic[10]).toInt()*10 + String(topic[11]).toInt();
 
-  
+  DEBUG("Display text: (%s) (%i,%i)\n", message,x,y,0);
+
   display.drawStringMaxWidth(x,y,64-x,message);
   display.display();
 }
@@ -72,3 +75,5 @@ void setfont(char *topic, char *message) {
   display.setFont("ArialMT_Plain_10");
   display.display();
 }
+
+#endif
