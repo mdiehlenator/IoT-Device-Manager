@@ -23,8 +23,8 @@ void setup() {
   setup_display();
 #endif
 
-#ifdef FEATURE_DTHXX
-  setup_dthxx();
+#ifdef FEATURE_DHTXX
+  setup_dhtxx();
 #endif
 }
 
@@ -35,8 +35,8 @@ void loop() {
   update_display();
 #endif
 
-#ifdef FEATURE_DTHXX
-  update_dthxx();
+#ifdef FEATURE_DHTXX
+  update_dhtxx();
 #endif
 
   do_poll();

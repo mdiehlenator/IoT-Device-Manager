@@ -1,3 +1,5 @@
+#ifdef FEATURE_PIN
+
 struct mode {
   char *name;
   int value;
@@ -127,3 +129,4 @@ void  poll_analoginput(int pin) {
   }
 }
 
+#endif

@@ -5,6 +5,9 @@
 #define WIFI_SSID "My_Wifi_SSID"
 #define WIFI_PASSWORD "Wifi_Passwd"
 
+//#define DHTTYPE DHT11   // DHT 11
+//#define DHTTYPE DHT21 // DHT 21 (AM2301)
+#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
 
 #define MQTT_SERVER "host.example.com"
 #define MQTT_PORT 8883

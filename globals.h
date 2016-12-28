@@ -3,8 +3,6 @@
 #define VERSIONMAJOR (1)
 #define VERSIONMINOR (0)
 
-#define DEBUGGING (1)
-
 #define DEBUG(M,A,B,C,D)
 #ifdef DEBUGGING
 #define DEBUG(M,A,B,C,D)   Serial.printf(M,A,B,C,D)
