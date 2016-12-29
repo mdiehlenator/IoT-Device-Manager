@@ -13,11 +13,10 @@ void  setup_dhtxx() {
 }
 
 void  update_dhtxx() {
+
+// This paragraph needs to go away.
   static int done = 0;
-
-delay(2000);
   if (done == 1) { return; }
-
   done = 1;
 
 humidity("a","b");

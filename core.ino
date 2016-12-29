@@ -1,4 +1,8 @@
-void ping(char *topic, char *message) {   
+void update_core() {
+
+}
+
+  void ping(char *topic, char *message) {   
   DEBUG("PING message: %s\n", message, "","","");
   sprintf(buffer1, "%s%s/manager/%s/pong", prefix,suffix,MAC,IP);
   DEBUG("PING publish: (%s)\n", buffer1, "","","");

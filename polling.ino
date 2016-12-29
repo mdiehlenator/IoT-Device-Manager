@@ -4,7 +4,11 @@ int wallclock = 0;
 
 void do_poll() {
   int i;
-  
+
+#ifdef FEATURE_CORE
+  update_core();
+#endif
+
 #ifdef FEATURE_SSD1306
   update_display();
 #endif
@@ -17,11 +21,8 @@ void do_poll() {
   update_pin();
 #endif
 
+  // This needs to count seconds.
   wallclock++;
-}
 
-void dummy_poll(int pin) {
-  DEBUG("dummmy from for (%i)\n", pin, "", "","");
 }
-
 

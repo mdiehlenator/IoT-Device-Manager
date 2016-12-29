@@ -36,6 +36,11 @@ void setup_pin() {
 
 void  update_pin() {
   int i;
+
+  // This paragraph needs to go away.
+  static int done = 0;
+  if (done == 1) { return; }
+  done = 1;
   
   for (i=0; i<MAXPINS; i++) {
     if (pin_mode[i] == -1) { continue; }
@@ -50,6 +55,7 @@ void  update_pin() {
       }
   }
 }
+
 void pinmode(char *topic, char *message) {
   int pin, value, i;
   int found = 0;
@@ -175,4 +181,10 @@ void  pin_value(int pin, int value) {
 
   return;
 }
+
+void dummy_poll(int pin) {
+  DEBUG("dummmy from for (%i)\n", pin, "", "","");
+}
+
+
 #endif
