@@ -1,5 +1,12 @@
 #ifdef FEATURE_PIN
 
+int pin_mode[MAXPINS];
+int pin_lastvalue[MAXPINS];
+int pin_interval[MAXPINS];
+int pin_lastpoll[MAXPINS];
+int pin_mindelta[MAXPINS];
+int pin_maxinterval[MAXPINS];
+
 struct mode {
   char *name;
   int value;
@@ -13,7 +20,36 @@ struct mode modes[] = {
   {"analogoutput", OUTPUT, dummy_poll},
 };
 
+void setup_pin() {
+  int i;
 
+  for (i=0; i<MAXPINS; i++) {
+    pin_mode[i] = -1;
+    pin_lastvalue[i] = -1;
+    pin_interval[i] = 5;
+    pin_lastpoll[i] = -1;
+    pin_mindelta[i] = 0;
+    pin_maxinterval[i] = 30;
+  }
+ 
+}
+
+void  update_pin() {
+  int i;
+  
+  for (i=0; i<MAXPINS; i++) {
+    if (pin_mode[i] == -1) { continue; }
+
+      if ((pin_lastpoll[i]+pin_interval[i] < wallclock) || (pin_lastpoll[i]+pin_maxinterval[i] < wallclock)) {
+        DEBUG("Running it from for (%i)\n", i, "", "","");
+        (modes[pin_mode[i]].poll)(i);
+        pin_lastpoll[i] = wallclock;
+      } else {
+        DEBUG("Skipping it from for (%i)\n", i, "", "","");
+
+      }
+  }
+}
 void pinmode(char *topic, char *message) {
   int pin, value, i;
   int found = 0;
@@ -129,4 +165,14 @@ void  poll_analoginput(int pin) {
   }
 }
 
+void  pin_value(int pin, int value) {
+  pin_lastvalue[pin] = value;
+
+  sprintf(buffer1, "%s%s/manager/%s/status/pinvalue/%i", prefix, suffix, MAC, pin);
+  sprintf(buffer2, "%i", value);
+
+  publish(buffer1, buffer2); 
+
+  return;
+}
 #endif

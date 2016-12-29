@@ -19,12 +19,6 @@ extern const char suffix[16];
 
 extern int mode[4];
 
-extern int pin_mode[MAXPINS];
-extern int pin_lastvalue[MAXPINS];
-extern int pin_intervals[MAXPINS];
-extern int pin_lastpoll[MAXPINS];
-extern int pin_mindelta[MAXPINS];
-extern int pin_maxinterval[MAXPINS];
 
 extern int wallclock;
 extern void init_callback();

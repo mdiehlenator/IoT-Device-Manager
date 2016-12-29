@@ -14,7 +14,9 @@ void setup() {
   setup_serial();
 #endif
 
-  init_polling();
+#ifdef FEATURE_PIN
+  setup_pin();
+#endif
 
   setup_wifi();
   setup_mqtt();
@@ -26,18 +28,11 @@ void setup() {
 #ifdef FEATURE_DHTXX
   setup_dhtxx();
 #endif
+
 }
 
 void loop() {
   update_mqtt();
-  
-#ifdef FEATURE_SSD1306
-  update_display();
-#endif
-
-#ifdef FEATURE_DHTXX
-  update_dhtxx();
-#endif
 
   do_poll();
   yield();

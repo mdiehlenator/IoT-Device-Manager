@@ -33,14 +33,3 @@ void uptime(char *topic, char *message) {
 
 
 
-void  pin_value(int pin, int value) {
-  pin_lastvalue[pin] = value;
-
-  sprintf(buffer1, "%s%s/manager/%s/status/pinvalue/%i", prefix, suffix, MAC, pin);
-  sprintf(buffer2, "%i", value);
-
-  publish(buffer1, buffer2); 
-
-  return;
-}
-
