@@ -93,9 +93,8 @@ void digitalwrite(char *topic, char *message) {
   value = String(message).toInt();
   
   DEBUG("SETTING PIN #%i = %i\n", pin,value, "", "");
-
   digitalWrite(pin, value);
-
+return;
   pin_value(pin, value);
    
   return;

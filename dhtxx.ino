@@ -32,8 +32,6 @@ void  update_dhtxx() {
 void tempc(char *topic, char *message) {
   float t = dht.readTemperature();
 
-DEBUG("XXX: %i\n", int(t*100), 0,0,0);
-  
   sprintf(buffer1, "%s%s/manager/%s/status/tempc", prefix, suffix, MAC);
   sprintf(buffer2, "%i.%i", int(t), 0); //,(t-int(t))*100);
   publish(buffer1, buffer2);
