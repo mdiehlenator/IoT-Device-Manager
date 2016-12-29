@@ -1,6 +1,11 @@
 #include "globals.h"
 
 int wallclock = 0;
+int last_milli = 0;
+
+void  setup_polling() {
+  last_milli = millis();
+}
 
 void do_poll() {
   int i;
@@ -21,8 +26,10 @@ void do_poll() {
   update_pin();
 #endif
 
-  // This needs to count seconds.
-  wallclock++;
+  if ((millis() - last_milli) > 1000) {
+    last_milli = millis();
+    wallclock++;
+  }
 
 }
 

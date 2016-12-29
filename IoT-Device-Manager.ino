@@ -29,6 +29,8 @@ void setup() {
   setup_dhtxx();
 #endif
 
+  setup_polling();
+  
 }
 
 void loop() {

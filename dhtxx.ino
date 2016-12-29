@@ -5,6 +5,9 @@
 
 DHT dht(2, DHTTYPE);
 
+int last_update = 0;
+int update_interval = 30;
+
 void  setup_dhtxx() {
   DEBUG("DHTxx initialized!\n",0,0,0,0);
 
@@ -14,11 +17,10 @@ void  setup_dhtxx() {
 
 void  update_dhtxx() {
 
-// This paragraph needs to go away.
-  static int done = 0;
-  if (done == 1) { return; }
-  done = 1;
+  if (wallclock-last_update < update_interval) { return; }
 
+  last_update = wallclock;
+  
 humidity("a","b");
 tempc("a","b");
 tempf("a","b");
