@@ -42,10 +42,8 @@ void  update_pin() {
 
   for (i=0; i<MAXPINS; i++) {
     if (pin_mode[i] == -1) { continue; }
-      //DEBUG("Polling pin (%i)\n", i, "", "","");
-
       if ((pin_lastpoll[i]+pin_interval[i] < wallclock) || (pin_lastpoll[i]+pin_maxinterval[i] < wallclock)) {
-        DEBUG("Running it from for (%i)\n", i, "", "","");
+        DEBUG("Running it for (%i)\n", i, "", "","");
         (modes[pin_mode[i]].poll)(i);
         pin_lastpoll[i] = wallclock;
       } else {
@@ -163,7 +161,7 @@ void  poll_digitalinput(int pin) {
 void  poll_analoginput(int pin) {
   int value;
   
-  DEBUG("poll_analoginput from for (%i)\n", pin, "", "","");
+  DEBUG("poll_analoginput for (%i)\n", pin, "", "","");
   value = analogRead(A0);
 
   if ((value != pin_lastvalue[pin]) || (pin_lastpoll[pin]+pin_maxinterval[pin] < wallclock)) {

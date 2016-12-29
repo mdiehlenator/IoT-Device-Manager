@@ -3,7 +3,7 @@
 #include "DHT.h"
 #include "globals.h"
 
-DHT dht(2, DHTTYPE);
+DHT dht(4, DHTTYPE);
 
 static int dhtxx_last_update = -1000;
 static int dhtxx_update_interval = 30;
@@ -35,7 +35,7 @@ void tempc(char *topic, char *message) {
 DEBUG("XXX: %i\n", int(t*100), 0,0,0);
   
   sprintf(buffer1, "%s%s/manager/%s/status/tempc", prefix, suffix, MAC);
-  sprintf(buffer2, "%i.%i", int(t),(t-int(t))*100);
+  sprintf(buffer2, "%i.%i", int(t), 0); //,(t-int(t))*100);
   publish(buffer1, buffer2);
   DEBUG("(%s) - (%s)\n", buffer1, buffer2, 0, 0);
 }
