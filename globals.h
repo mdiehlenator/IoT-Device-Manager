@@ -19,20 +19,7 @@ extern const char suffix[16];
 
 extern int mode[4];
 
-
 extern int wallclock;
 extern void init_callback();
 extern struct command commands[];
 void init_polling();
-extern void dummy_poll(int pin);
-
-extern void ping(char *topic, char *message);
-extern void pinmode(char *topic, char *message);
-extern void digitalwrite(char *topic, char *message);
-extern void digitalread(char *topic, char *message);
-extern void analogread(char *topic, char *message);
-extern void analogwrite(char *topic, char *message);
-extern void reboot(char *topic, char *message);
-extern void version(char *topic, char *message);
-extern void uptime(char *topic, char *message);
-
