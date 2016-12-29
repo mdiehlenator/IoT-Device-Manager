@@ -15,6 +15,7 @@ void  setup_dhtxx() {
 void  update_dhtxx() {
   static int done = 0;
 
+delay(2000);
   if (done == 1) { return; }
 
   done = 1;
@@ -26,24 +27,12 @@ void  update_dhtxx() {
   float hif = dht.computeHeatIndex(f, h);
   float hic = dht.computeHeatIndex(t, h, false);
 
-  Serial.print("Humidity: ");
-  Serial.print(h);
-  Serial.print(" %\t");
-  Serial.print("Temperature: ");
-  Serial.print(t);
-  Serial.print(" *C ");
-  Serial.print(f);
-  Serial.print(" *F\t");
-  Serial.print("Heat index: ");
-  Serial.print(hic);
-  Serial.print(" *C ");
-  Serial.print(hif);
-  Serial.println(" *F");
+
 
   sprintf(buffer1, "%s%s/manager/%s/status/temperatureF", prefix, suffix, MAC);
-  sprintf(buffer2, "%i", int(f));
+  sprintf(buffer2, "%i.%i", int(f),(f-int(f))*100);
   publish(buffer1, buffer2);
-  Serial.printf("(%s) - (%s)\n", buffer1, buffer2);
+  DEBUG("(%s) - (%s)\n", buffer1, buffer2, 0, 0);
   
 }
 
