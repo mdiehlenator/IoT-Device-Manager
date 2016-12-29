@@ -1,5 +1,7 @@
 #ifdef FEATURE_PIN
 
+#define MAXPINS (24)
+
 static int pin_last_update = -1000;
 static int pin_update_interval = 5;
 
@@ -94,7 +96,7 @@ void digitalwrite(char *topic, char *message) {
   
   DEBUG("SETTING PIN #%i = %i\n", pin,value, "", "");
   digitalWrite(pin, value);
-return;
+
   pin_value(pin, value);
    
   return;
@@ -169,6 +171,7 @@ void  poll_analoginput(int pin) {
 }
 
 void  pin_value(int pin, int value) {
+return;
   pin_lastvalue[pin] = value;
 
   sprintf(buffer1, "%s%s/manager/%s/status/pinvalue/%i", prefix, suffix, MAC, pin);
