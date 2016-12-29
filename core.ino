@@ -1,10 +1,10 @@
-int last_update = 0;
-int update_interval = 5;
+int core_last_update = 0;
+int core_update_interval = 5;
 
 void update_core() {
-  if (wallclock-last_update < update_interval) { return; }
-
-  last_update = wallclock;
+  if (wallclock-core_last_update < core_update_interval) { return; }
+  core_last_update = wallclock;
+  
   ping("","");
 }
 

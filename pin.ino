@@ -1,5 +1,8 @@
 #ifdef FEATURE_PIN
 
+static int pin_last_update = -1000;
+static int pin_update_interval = 30;
+
 int pin_mode[MAXPINS];
 int pin_lastvalue[MAXPINS];
 int pin_interval[MAXPINS];
@@ -37,10 +40,8 @@ void setup_pin() {
 void  update_pin() {
   int i;
 
-  // This paragraph needs to go away.
-  static int done = 0;
-  if (done == 1) { return; }
-  done = 1;
+  if (wallclock-pin_last_update < pin_update_interval) { return; }
+  pin_last_update = wallclock;
   
   for (i=0; i<MAXPINS; i++) {
     if (pin_mode[i] == -1) { continue; }

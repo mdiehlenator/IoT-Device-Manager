@@ -18,7 +18,6 @@ void  setup_dhtxx() {
 void  update_dhtxx() {
 
   if (wallclock-dhtxx_last_update < dhtxx_update_interval) { return; }
-
   dhtxx_last_update = wallclock;
   
   humidity("","");
