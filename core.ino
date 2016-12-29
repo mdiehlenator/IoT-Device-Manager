@@ -1,5 +1,5 @@
 int core_last_update = 0;
-int core_update_interval = 5;
+int core_update_interval = 15;
 
 void update_core() {
   if (wallclock-core_last_update < core_update_interval) { return; }
@@ -15,7 +15,6 @@ void ping(char *topic, char *message) {
   publish(buffer1, IP); 
   return;
 }
-
 
 void reboot(char *topic, char *message) {
 

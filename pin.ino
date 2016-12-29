@@ -1,7 +1,7 @@
 #ifdef FEATURE_PIN
 
 static int pin_last_update = -1000;
-static int pin_update_interval = 30;
+static int pin_update_interval = 5;
 
 int pin_mode[MAXPINS];
 int pin_lastvalue[MAXPINS];
@@ -40,19 +40,18 @@ void setup_pin() {
 void  update_pin() {
   int i;
 
-  if (wallclock-pin_last_update < pin_update_interval) { return; }
-  pin_last_update = wallclock;
-  
   for (i=0; i<MAXPINS; i++) {
     if (pin_mode[i] == -1) { continue; }
+      //DEBUG("Polling pin (%i)\n", i, "", "","");
 
       if ((pin_lastpoll[i]+pin_interval[i] < wallclock) || (pin_lastpoll[i]+pin_maxinterval[i] < wallclock)) {
         DEBUG("Running it from for (%i)\n", i, "", "","");
         (modes[pin_mode[i]].poll)(i);
         pin_lastpoll[i] = wallclock;
       } else {
+        if (wallclock-pin_last_update < pin_update_interval) { return; }
+        pin_last_update = wallclock;
         DEBUG("Skipping it from for (%i)\n", i, "", "","");
-
       }
   }
 }
