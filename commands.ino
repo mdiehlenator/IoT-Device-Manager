@@ -26,7 +26,16 @@ struct command commands[] = {
   {"setfont", setfont},
 #endif
 
+#ifdef FEATURE_DHTXX
+  {"tempc", tempc},
+  {"tempf", tempf},
+  {"humidity", humidity},
+#endif
+
 };
+
+
+
 
 
 void callback(char* topic, byte* payload, unsigned int length) {
