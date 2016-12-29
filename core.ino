@@ -1,12 +1,18 @@
-void update_core() {
+int last_update = 0;
+int update_interval = 5;
 
+void update_core() {
+  if (wallclock-last_update < update_interval) { return; }
+
+  last_update = wallclock;
+  ping("","");
 }
 
-  void ping(char *topic, char *message) {   
+void ping(char *topic, char *message) {   
   DEBUG("PING message: %s\n", message, "","","");
-  sprintf(buffer1, "%s%s/manager/%s/pong", prefix,suffix,MAC,IP);
+  sprintf(buffer1, "%s%s/manager/%s/pong", prefix,suffix,MAC);
   DEBUG("PING publish: (%s)\n", buffer1, "","","");
-  publish(buffer1, buffer2); 
+  publish(buffer1, IP); 
   return;
 }
 
