@@ -12,6 +12,7 @@ int wallclock = 0;
 void init_polling() {
   int i;
 
+#ifdef FEATURE_PIN
   for (i=0; i<MAXPINS; i++) {
     pin_mode[i] = -1;
     pin_lastvalue[i] = -1;
@@ -20,12 +21,14 @@ void init_polling() {
     pin_mindelta[i] = 0;
     pin_maxinterval[i] = 30;
   }
-  
+#endif
+ 
 }
 
 void do_poll() {
   int i;
 
+#ifdef FEATURE_PIN
   for (i=0; i<MAXPINS; i++) {
     if (pin_mode[i] == -1) { continue; }
 
@@ -38,9 +41,9 @@ void do_poll() {
 
       }
   }
+#endif
 
   wallclock++;
-  delay(1000);
 }
 
 void dummy_poll(int pin) {

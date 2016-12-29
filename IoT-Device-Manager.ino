@@ -41,6 +41,7 @@ void loop() {
 
   do_poll();
   yield();
+  delay(1000);
 }
 
 #ifdef DEBUGGING
