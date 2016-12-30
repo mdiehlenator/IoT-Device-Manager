@@ -5,8 +5,8 @@
 #include "globals.h"
 #include "config.h"
 
-char buffer1[50];
-char buffer2[50];
+char buffer1[100];
+char buffer2[100];
 
 void setup() {
 

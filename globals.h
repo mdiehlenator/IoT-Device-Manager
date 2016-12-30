@@ -10,8 +10,6 @@ extern WiFiClient espclient;
 extern char IP[16];
 extern char MAC[18];
 
-//extern uint8 MAC_NVRAM[7];
-//extern int mqtt_port;
 extern const char prefix[16];
 extern const char suffix[16];
 
