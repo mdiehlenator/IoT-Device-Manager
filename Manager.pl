@@ -44,6 +44,7 @@ sub	process {
 	if ($from_device->{id} eq $h->{from}) { $from_id = 1;}
 	if ($to_device->{id} eq $h->{to}) { $to_id = 1;}
 
+	if ($h->{from} eq "manager") { return; }			# This is a message from the manager to a device... we sent it, so we ignore it.
 	if (($h->{from} eq "manager") && ($to_id == 1)) { return; }			# This is a message from the manager to a device... we sent it, so we ignore it.
 
 	if (($from_id == 1) && ($h->{to} eq "manager")) { 
@@ -70,14 +71,24 @@ sub	process {
 
 sub	protocol_error {
 	my($h, $msg) = @_;
+	my($a);
 
-	print "Protocol: ";
+	$a = stringify_h($h);
+
+	print "Protocol: ($a) \"$msg\"\n";
+
+	mqtt::publish("Diehl/all/manager/protocol/", "($a) \"$msg\"");
+}
+
+sub	stringify_h {
+	my($h) = @_;
+	my($a, $i);
 
 	foreach $i (sort keys %$h) {
-		print "$i->$h->{$i} ";
+		$a .= "$i->$h->{$i} ";
 	}
 
-	print "($msg)\n";
+	return $a;
 }
 
 sub	get_config {
