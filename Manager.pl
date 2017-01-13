@@ -45,14 +45,16 @@ sub	process {
 	if ($to_device->{id} eq $h->{to}) { $to_id = 1;}
 
 	if ($h->{from} eq "manager") { return; }			# This is a message from the manager to a device... we sent it, so we ignore it.
-	if (($h->{from} eq "manager") && ($to_id == 1)) { return; }			# This is a message from the manager to a device... we sent it, so we ignore it.
+	if (($h->{from} eq "manager") && ($to_id == 1)) { return; }	# This is a message from the manager to a device... we sent it, so we ignore it.
 
 	if (($from_id == 1) && ($h->{to} eq "manager")) { 
-		protocol_error($h, "Warn: Message came from device-id and sent to manager."); 
+		protocol_error($h, "Error: Unknown message came from device-id and sent to manager."); 
+		return;
 	}	
 
 	if (($to_id ==1) && $h->{from} ne "managaer") { 
 		protocol_error($h, "Error: Someone sent a message directly to a device."); # No one but the manager should be sending messages to devices directly.
+		return;
 	}
 
 	# Then, let's check the platform-specific functions.
@@ -61,8 +63,8 @@ sub	process {
 		print "The device, $h->{from} is a $device->{type} named $device->{name}\n";
 
 		if ($functions{$device->{type}}{$h->{command}}) {
-		&{$functions{$device->{type}}{$h->{command}}}($h);
-	}
+			&{$functions{$device->{type}}{$h->{command}}}($h);
+		}
 
 	}
 
