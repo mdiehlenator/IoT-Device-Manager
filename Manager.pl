@@ -10,7 +10,7 @@ require "./modules/device.pm";
 
 STDOUT->autoflush;
 
-utils::get_config();
+get_config();
 
 require "./features/core.pm";
 
@@ -81,3 +81,16 @@ sub	protocol_error {
 	print "($msg)\n";
 }
 
+sub	get_config {
+	my($fh);
+
+	$fh = FileHandle->new("./config.h", "r");
+	while (<$fh>) {
+		if ($_ =~ m/#define\s+(\S+)\s+(\S+)/) {
+			my(@a) = ($1, $2);
+			$a[1] =~ s/"//g;
+
+			$main::config{$a[0]} = $a[1];
+		}
+	}
+}
