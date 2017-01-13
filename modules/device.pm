@@ -40,8 +40,6 @@ sub	read_device {
 			$feature = $1;
 			require "./features/${feature}.pm";
 			&{$feature . "::parse_config"}($fh, $device);
-
-			$device{$key}->{$o};
 		}
 		
 		($var, $val) = split(/\s*=\s*/);

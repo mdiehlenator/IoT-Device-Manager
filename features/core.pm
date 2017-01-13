@@ -1,10 +1,10 @@
 package core;
 
 BEGIN {
-	$main::functions{core}{boot} = core::boot;
-	$main::functions{core}{startup} = core::startup;
-	$main::functions{core}{pong} = core::pong;
-	$main::functions{core}{status} = core::status;
+	$main::functions{core}{receive_boot} = core::boot;
+	$main::functions{core}{receive_startup} = core::startup;
+	$main::functions{core}{receive_pong} = core::pong;
+	$main::functions{core}{receive_status} = core::status;
 
 	print "Core loaded.\n";
 }

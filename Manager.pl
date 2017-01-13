@@ -33,8 +33,8 @@ sub	process {
 	#print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
 	
 	# Let's check the core functions first.
-	if ($functions{core}{$h->{command}}) {
-		&{$functions{core}{$h->{command}}}($h);
+	if ($functions{core}{"receive_" . $h->{command}}) {
+		&{$functions{core}{"receive_" . $h->{command}}}($h);
 		return;
 	}
 
