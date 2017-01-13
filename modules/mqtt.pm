@@ -55,7 +55,7 @@ sub	callback {
 	$t{root} = $a[0];
 
 	if ($a[1] =~ m/[a-f0-9]{2}:[a-f0-9]{2}:/) {
-		print "This must have been sent to a device.\n";
+		#print "This must have been sent to a device.\n";
 		if ($a[2] eq "manager") {
 			$t{to} = $a[1];
 			$t{from} = "manager";
@@ -65,13 +65,13 @@ sub	callback {
 		}
 	} else {
 		if ($a[1] eq "manager") { 
-			print "This was sent to the manager\n";
+			#print "This was sent to the manager\n";
 			$t{to} = "manager";
 			$t{from} = $a[2];
 			$t{command} = $a[3];
 			$t{params} = join(",", $a[4]);
 		} else {
-			print "This was something else.\n";
+			#print "This was something else.\n";
 			$t{to} = $a[1];
 			$t{from} = $a[2];
 			$t{command} = $a[3];

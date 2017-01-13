@@ -31,7 +31,7 @@ while (1) {
 sub	process {
 	my ($h) = @_;
 
-	print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
+	#print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
 	
 	# Let's check the core functions first.
 	if ($functions{core}{$h->{command}}) {
