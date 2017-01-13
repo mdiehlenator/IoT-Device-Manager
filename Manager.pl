@@ -4,7 +4,6 @@ use AnyEvent;
 use Net::MQTT::Simple;
 use FileHandle;
 
-require "./modules/utils.pm";
 require "./modules/mqtt.pm";
 require "./modules/device.pm";
 
