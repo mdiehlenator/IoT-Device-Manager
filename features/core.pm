@@ -10,21 +10,30 @@ BEGIN {
 }
 
 sub	boot {
-	print "Core::boot() called\n";
+	my($h) = @_;
+
+	print "Core::boot() called for $h->{from}\n";
+	##mqtt::publish
 	return;
 }
 
 sub	startup{
-	print "Core::startup() called\n";
+	my($h) = @_;
+
+	print "Core::startup() called because master just restarted.\n";
 	return;
 }
 
 sub	pong{
+	my($h) = @_;
+
 	print "Core::pong() called\n";
 	return;
 }
 
 sub	status {
+	my($h) = @_;
+
 	print "Core::status() called\n";
 	return;
 }
