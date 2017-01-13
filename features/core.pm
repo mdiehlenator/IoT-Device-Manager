@@ -1,14 +1,14 @@
 package core;
 
 BEGIN {
-	$main::functions{core}{boot} = core::bootup;
+	$main::functions{core}{boot} = core::boot;
 	$main::functions{core}{startup} = core::startup;
 
 	print "Core loaded.\n";
 }
 
-sub	bootup {
-	print "Core::bootup() called\n";
+sub	boot {
+	print "Core::boot() called\n";
 	return;
 }
 
