@@ -30,6 +30,8 @@ sub	read_device {
 
 	print "Reading: ./devices/${file}\n";
 
+	main::see($device);
+
 	$fh = FileHandle->new("./devices/${file}", "r");
 	while (<$fh>) {
 		chomp($_);

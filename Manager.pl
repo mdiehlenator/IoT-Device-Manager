@@ -21,25 +21,54 @@ print "==============================================================\n";
 
 mqtt::do_connect();
 
+$wallclock = 0;
+
 while (1) {
+	my $t = AnyEvent->timer(interval => 1, cb =>  
+		sub {
+			return &main::wallclock();
+		}
+	); 
+
 	AnyEvent->condvar->recv; # wake up current and all future recv's
 }
 
 ################################################################
+
+sub	tick {
+	my($d);
+
+	$seen{manager} = $wallclock;
+
+	foreach $d (keys %seen) {
+		print "X: $d was last seen at $seen{$d}\n";
+
+		if (($wallclock - $seen{$d}) > 30) {
+			mqtt::publish("Diehl/all/manager/devicedown/$d/", $wallclock-$seen{$d});
+		}
+	}
+}
+
+sub	wallclock {
+	tick();
+	print "Wallclock: $wallclock\n";
+	$wallclock++;
+}
 
 sub	process {
 	my ($h) = @_;
 
 	#print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
 	
+	$from_device = device::find_device($h->{from});
+	$to_device = device::find_device($h->{to});
+
 	# Let's check the core functions first.
 	if ($functions{core}{"receive_" . $h->{command}}) {
+		see($h->{from});
 		&{$functions{core}{"receive_" . $h->{command}}}($h);
 		return;
 	}
-
-	$from_device = device::find_device($h->{from});
-	$to_device = device::find_device($h->{to});
 
 	if ($from_device->{id} eq $h->{from}) { $from_id = 1;}
 	if ($to_device->{id} eq $h->{to}) { $to_id = 1;}
@@ -106,3 +135,11 @@ sub	get_config {
 		}
 	}
 }
+
+sub	see {
+	my($device) = @_;
+
+	print "I see $device ($wallclock)\n";
+	$seen{$device} = $wallclock;
+}
+
