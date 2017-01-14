@@ -35,24 +35,27 @@ while (1) {
 
 ################################################################
 
-sub	tick {
-	my($d);
 
-	$seen{manager} = $wallclock;
+sub	wallclock {
+	my($d);
+	my($device);
+
+	print "Wallclock: $wallclock\n";
+	see("manager");
+	$wallclock++;
 
 	foreach $d (keys %seen) {
-		print "X: $d was last seen at $seen{$d}\n";
 
-		if (($wallclock - $seen{$d}) > 30) {
+		if ($d eq "manager") { return; }
+print "YY: wallclock: $d $d $seen{$d}\n";
+
+		if (($wallclock - $seen{$d{from}}) > 25) {
+print "XX: $d $seen{$d->{from}}\n";
+			$device = device::find_device($d{from});
+			print "X: $d{from} was last seen at $seen{$d{from}} ($device)\n";
 			mqtt::publish("Diehl/all/manager/devicedown/$d/", $wallclock-$seen{$d});
 		}
 	}
-}
-
-sub	wallclock {
-	tick();
-	print "Wallclock: $wallclock\n";
-	$wallclock++;
 }
 
 sub	process {
@@ -139,7 +142,7 @@ sub	get_config {
 sub	see {
 	my($device) = @_;
 
-	print "I see $device ($wallclock)\n";
+	#print ("I see $device.\n");
 	$seen{$device} = $wallclock;
 }
 
