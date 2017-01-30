@@ -39,7 +39,7 @@ sub	wallclock {
 	my($device);
 
 	#print "Wallclock: $wallclock\n";
-	see("manager");
+	see("manager", 1);
 	$wallclock++;
 
 	foreach $d (keys %seen) {
@@ -57,7 +57,7 @@ sub	wallclock {
 sub	process {
 	my ($h) = @_;
 
-	if ($h->{from} ne "") { see($h->{from}); }
+	if ($h->{from} ne "") { see($h->{from}, 0); }
 
 	$from_device = device::find_device($h->{from});
 	$to_device = device::find_device($h->{to});
@@ -132,8 +132,14 @@ sub	get_config {
 }
 
 sub	see {
-	my($device) = @_;
+	my($device, $force) = @_;
 	my($d);
+
+	if ($force == 1) {
+		$seen{$device} = $wallclock;
+		#print ("I see $device.\n");
+		return;
+	}
 
 	if ($device eq "manager") {
 		$seen{$device} = $wallclock;
@@ -149,6 +155,6 @@ sub	see {
 		return;
 	}
 
-	#print "Not seeing unknown device, ($device)\n";
+	print "Not seeing unknown device, ($device)\n";
 }
 

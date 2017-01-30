@@ -15,8 +15,13 @@ sub	parse_line {
 
 	($var, $val) = split(/\s*=\s*/, $line);
 
-	#$device->{$var} = $val;  ### deprecate this.
 	$device->{core}->{$var} = $val;
+	$device->{$var} = $val;
+
+	if ($var eq "id") {
+		#main::see($val, 1);
+		$device{id} = $val;
+	}
 
 	if ($var eq "type") {
 		require "./device_definitions/$val\.pm";

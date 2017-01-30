@@ -15,6 +15,8 @@ sub	read_devices {
 
 		$device = read_device($_);
 		add_device($device);
+
+		main::see($device->{core}->{id}, 1);
 	}
 }
 
@@ -23,14 +25,7 @@ sub	read_device {
 	my($fh, $line, $device, $var, $val);
 	my(%device, $feature);
 
-	$device = $file;
-	$device =~ s/\.conf//;
-
-	$device{id} = $device;
-
 	print "Reading: ./devices/${file}\n";
-
-	main::see($device);
 
 	$fh = FileHandle->new("./devices/${file}", "r");
 	while (<$fh>) {
