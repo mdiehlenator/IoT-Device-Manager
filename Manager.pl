@@ -40,19 +40,19 @@ sub	wallclock {
 	my($d);
 	my($device);
 
-	print "Wallclock: $wallclock\n";
+	#print "Wallclock: $wallclock\n";
 	see("manager");
 	$wallclock++;
 
 	foreach $d (keys %seen) {
 
-		if ($d eq "manager") { return; }
-print "YY: wallclock: $d $d $seen{$d}\n";
+		#if ($d eq "manager") { return; }
+		if ($d eq "manager") { next; }
 
-		if (($wallclock - $seen{$d{from}}) > 25) {
-print "XX: $d $seen{$d->{from}}\n";
-			$device = device::find_device($d{from});
-			print "X: $d{from} was last seen at $seen{$d{from}} ($device)\n";
+		#if (($wallclock - $seen{$d{from}}) > 25) {
+		if (($wallclock - $seen{$d}) > 20) {
+			$device = device::find_device($d);
+			print "X: $d{from} was last seen at " . $seen{$d}+0 . " ($device)\n";
 			mqtt::publish("Diehl/all/manager/devicedown/$d/", $wallclock-$seen{$d});
 		}
 	}
@@ -89,6 +89,7 @@ sub	process {
 		return;
 	}
 
+print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
 	# Then, let's check the platform-specific functions.
 	if (($h->{to} eq "manager") and (device::find_device($h->{from}) ne "")) {
 		my $device = device::find_device($h->{from});

@@ -18,6 +18,8 @@ sub     publish {
 	$cv = $mqtt->publish("topic" => $topic, "message" => $message);
 	$cv->recv;
 
+	$sent{$topic}++;
+
 	print "Publish: ($topic) -> ($message)\n";
 }
 
@@ -48,6 +50,11 @@ sub	callback {
 	my(%t, @a);
 
 	my @a = split("/", $topic);
+
+	if ($sent{$topic}) {
+		delete($sent{$topic});
+		return;
+	}
 
 	$t{message} = $message;
 	$t{topic} = $topic;

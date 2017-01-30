@@ -11,7 +11,7 @@ sub	read_devices {
 	while (readdir(DIR)) {
 		if ($_ eq ".") { next; }
 		if ($_ eq "..") { next; }
-		if ($_ =~ m/\.swp/) { next; }
+		if ($_ =~ m/.+\.swp/) { next; }
 
 		$device = read_device($_);
 		add_device($device);

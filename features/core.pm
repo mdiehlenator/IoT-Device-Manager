@@ -11,9 +11,18 @@ BEGIN {
 
 sub	boot {
 	my($h) = @_;
+	my($device);
 
-	print "Core::boot() called for $h->{from}\n";
-	##mqtt::publish
+	$device = device::find_device($h->{from});
+	$name = $device->{name};
+
+	print "Core::boot() called for $h->{from}/$name\n";
+        mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{name}/boot", 1);
+
+	foreach $pin (keys %{$main::pin{$device}}) {
+
+	}
+
 	return;
 }
 
@@ -21,6 +30,8 @@ sub	startup{
 	my($h) = @_;
 
 	print "Core::startup() called because master just restarted.\n";
+        mqtt::publish("$main::config{MQTT_PREFIX}/all/master/startup", 1);
+
 	return;
 }
 
@@ -28,13 +39,35 @@ sub	pong{
 	my($h) = @_;
 
 	print "Core::pong() called\n";
+
+	#$device = device::find_device($h->{from});
+	#mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{name}/pong/", 1);
+
 	return;
 }
 
 sub	status {
 	my($h) = @_;
+	my($device, $i);
 
-	print "Core::status() called\n";
+	#print "Core::status() called\n";
+
+	#print "=============================\n";
+	foreach $i (keys %$h) {
+	#	print "\t$i\t$h->{$i}\n";
+	}
+
+
+	$device = device::find_device($h->{from});
+
+	#print "============================= $device\n";
+	foreach $i (keys %$device) {
+	#	print "\t$i\t$device->{$i}\n";
+	}
+	#print "=============================\n";
+
+        mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{name}/status/$h->{params}", $h->{message});
+
 	return;
 }
 
