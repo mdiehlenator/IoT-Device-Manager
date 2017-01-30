@@ -11,8 +11,6 @@ STDOUT->autoflush;
 
 get_config();
 
-require "./features/core.pm";
-
 device::read_devices();
 
 print "Registered $device::device_count devices.\n";
@@ -46,10 +44,8 @@ sub	wallclock {
 
 	foreach $d (keys %seen) {
 
-		#if ($d eq "manager") { return; }
 		if ($d eq "manager") { next; }
 
-		#if (($wallclock - $seen{$d{from}}) > 25) {
 		if (($wallclock - $seen{$d}) > 20) {
 			$device = device::find_device($d);
 			print "X: $d{from} was last seen at " . $seen{$d}+0 . " ($device)\n";
@@ -61,47 +57,42 @@ sub	wallclock {
 sub	process {
 	my ($h) = @_;
 
-	#print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
-	
+	if ($h->{from} ne "") { see($h->{from}); }
+
 	$from_device = device::find_device($h->{from});
 	$to_device = device::find_device($h->{to});
-
-	# Let's check the core functions first.
-	if ($functions{core}{"receive_" . $h->{command}}) {
-		see($h->{from});
-		&{$functions{core}{"receive_" . $h->{command}}}($h);
-		return;
-	}
 
 	if ($from_device->{id} eq $h->{from}) { $from_id = 1;}
 	if ($to_device->{id} eq $h->{to}) { $to_id = 1;}
 
-	if ($h->{from} eq "manager") { return; }			# This is a message from the manager to a device... we sent it, so we ignore it.
-	if (($h->{from} eq "manager") && ($to_id == 1)) { return; }	# This is a message from the manager to a device... we sent it, so we ignore it.
+	print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message}) (from_id = $from_id) (to_id = $to_id}\n";
 
-	if (($from_id == 1) && ($h->{to} eq "manager")) { 
-		protocol_error($h, "Error: Unknown message came from device-id and sent to manager."); 
-		return;
-	}	
+#I got (topic = Diehl-raw/60:01:94:0e:87:14/tst/digitalwrite/16 (from = ) (to = ) (command = ) (params = )  (message = 1) (from_id = 1) (to_id = }
 
-	if (($to_id ==1) && $h->{from} ne "managaer") { 
+	if (($from_id == 1) and ($to_id == 0) and ($h->{from} ne "manager") and ($h->{to} ne "manager")) {
 		protocol_error($h, "Error: Someone sent a message directly to a device."); # No one but the manager should be sending messages to devices directly.
 		return;
 	}
 
-print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message})\n";
-	# Then, let's check the platform-specific functions.
-	if (($h->{to} eq "manager") and (device::find_device($h->{from}) ne "")) {
-		my $device = device::find_device($h->{from});
-		print "The device, $h->{from} is a $device->{type} named $device->{name}\n";
 
-		if ($functions{$device->{type}}{$h->{command}}) {
-			&{$functions{$device->{type}}{$h->{command}}}($h);
+	$device = device::find_device($h->{from});
+
+	if (($h->{to} eq "manager") and ($from_device ne "")) {
+
+### @@@ Do we really use this?
+		if ($functions{$from_device->{type}}{$h->{command}}) {
+			&{$functions{$from_device->{type}}{$h->{command}}}($h);
 		}
 
-	}
+		foreach $i (keys %$from_device) {
+			if ($functions{$i}{"device_" . $h->{command}}) {
+				&{$functions{$i}{"device_" . $h->{command}}}($h);
+				#return;
+			}
+		}
 
-	# Finally, let's try the device-specific (feature?) functions.
+		return;
+	}
 }
 
 sub	protocol_error {
@@ -142,8 +133,22 @@ sub	get_config {
 
 sub	see {
 	my($device) = @_;
+	my($d);
 
-	#print ("I see $device.\n");
-	$seen{$device} = $wallclock;
+	if ($device eq "manager") {
+		$seen{$device} = $wallclock;
+		#print ("I see $device.\n");
+		return;
+	}
+
+	$d = device::find_device($device);
+
+	if ($d ne "") {
+		#print ("I see $device.\n");
+		$seen{$device} = $wallclock;
+		return;
+	}
+
+	#print "Not seeing unknown device, ($device)\n";
 }
 

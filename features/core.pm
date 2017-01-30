@@ -1,12 +1,26 @@
 package core;
 
 BEGIN {
-	$main::functions{core}{receive_boot} = core::boot;
-	$main::functions{core}{receive_startup} = core::startup;
-	$main::functions{core}{receive_pong} = core::pong;
-	$main::functions{core}{receive_status} = core::status;
+	$main::functions{core}{device_boot} = core::boot;
+	$main::functions{core}{device_startup} = core::startup;
+	$main::functions{core}{device_pong} = core::pong;
+	$main::functions{core}{device_status} = core::status;
 
 	print "Core loaded.\n";
+}
+
+sub	parse_line {
+	my($device, $line) = @_;
+	my($var, $val);
+
+	($var, $val) = split(/\s*=\s*/, $line);
+
+	#$device->{$var} = $val;  ### deprecate this.
+	$device->{core}->{$var} = $val;
+
+	if ($var eq "type") {
+		require "./device_definitions/$val\.pm";
+	}
 }
 
 sub	boot {
@@ -14,14 +28,12 @@ sub	boot {
 	my($device);
 
 	$device = device::find_device($h->{from});
-	$name = $device->{name};
+	$name = $device->{core}->{name};
 
 	print "Core::boot() called for $h->{from}/$name\n";
-        mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{name}/boot", 1);
-
-	foreach $pin (keys %{$main::pin{$device}}) {
-
-	}
+        mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{core}->{name}/boot", 1);
+        mqtt::publish("$main::config{MQTT_PREFIX}$main::config{MQTT_SUFFIX}/$device->{core}->{id}/manager/version", 1);
+        mqtt::publish("$main::config{MQTT_PREFIX}$main::config{MQTT_SUFFIX}/$device->{core}->{id}/manager/uptime", 1);
 
 	return;
 }
@@ -41,7 +53,7 @@ sub	pong{
 	print "Core::pong() called\n";
 
 	#$device = device::find_device($h->{from});
-	#mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{name}/pong/", 1);
+	#mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{core}->{name}/pong/", 1);
 
 	return;
 }
@@ -66,7 +78,7 @@ sub	status {
 	}
 	#print "=============================\n";
 
-        mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{name}/status/$h->{params}", $h->{message});
+        mqtt::publish("$main::config{MQTT_PREFIX}/all/$device->{core}->{name}/status/$h->{params}", $h->{message});
 
 	return;
 }

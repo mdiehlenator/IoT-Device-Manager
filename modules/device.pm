@@ -37,19 +37,15 @@ sub	read_device {
 		chomp($_);
 
 		if ($_ eq "") { next; }
+		if ($_ =~ m/^#/) { next; }
 
 		if ($_ =~ m/feature\s+(\S+)/) {
 			$feature = $1;
 			require "./features/${feature}.pm";
-			&{$feature . "::parse_config"}($fh, $device);
+			next;
 		}
-		
-		($var, $val) = split(/\s*=\s*/);
-		$device{$var} = $val;
 
-		if ($var eq "type") {
-			require "./device_definitions/$val\.pm";
-		}
+		&{$feature . "::parse_line"}(\%device, $_);
 	}
 
 	return \%device;

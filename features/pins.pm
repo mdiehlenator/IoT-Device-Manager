@@ -1,47 +1,55 @@
 package pins;
 
 BEGIN {
-	$main::functions{esp8266}{pinmode} = pins::pinmode;
+	$main::functions{pins}{device_boot} = pins::boot;
+	$main::functions{pins}{device_set} = pins::set;
+
 }
 
-sub	parse_config {
-	my($fh, $device) = @_;
-	my($pin, $pin_number);
+sub	set {
+	my($h) = @_;
 
-        while (<$fh>) {
-		chomp($_);
+	print "XXX: pins::set() called for $h->{from} to $h->{to}\n";
 
-		if ($_ eq "") { next; }
+}
 
-		if (m/^pin(\d+):/) {
-			$_ =~ s/^pin(\d+)://;
-			$pin_number = $1;
-			$pin = parse_line($device, $pin_number, $_);
+sub	boot {
+	my($h) = @_;
+        my($device);
 
-			$pins{$pin->{name}} = $pin;
-		}
+	print "X: pins::boot() called for $h->{from}\n";
 
+	$device = device::find_device($h->{from});
+
+	$pins = $device->{pins};
+
+	foreach $pin (keys %$pins) {
+		print "X: $pin -> $pins->{$pin}->{name}\n";
+		mqtt::publish("$main::config{MQTT_PREFIX}$main::config{MQTT_SUFFIX}/$device->{core}->{id}/manager/pinmode/$pin", $pins->{$pin}->{mode});
+		mqtt::publish("$main::config{MQTT_PREFIX}$main::config{MQTT_SUFFIX}/$device->{core}->{id}/manager/digitalwrite/$pin", $pins->{$pin}->{initial});
 	}
 
-	return;
 }
 
 sub	parse_line {
-	my($device, $pin, $line) = @_;
+        my($device, $line) = @_;
 	my(@terms, $term, $var, $val);
 	my(%pin, $name);
+	my($number, $config);
 
-	@terms = split(/\s*;\s*/);
+	($number, $config) = split(":");
+
+	@terms = split(/\s*;\s*/, $config);
 
 	foreach $term (@terms) {
 		($var,$val) = split("=", $term);
 
-		#print "Pin: $device / $pin $var = $val\n";
+		print "Pin: $device->{id} / $number $var = $val\n";
 
-		$pin{$var} = $val;
+		$pin->{$var} = $val;
 	}
 
-	return \%pin;
+	$device->{pins}->{$number} = $pin;
 }
 
 return 1;
