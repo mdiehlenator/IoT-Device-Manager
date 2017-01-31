@@ -56,16 +56,33 @@ sub	wallclock {
 
 sub	process {
 	my ($h) = @_;
+	my($from_device, $to_device, $from_id, $to_id);
+	my($i);
 
 	if ($h->{from} ne "") { see($h->{from}, 0); }
 
 	$from_device = device::find_device($h->{from});
 	$to_device = device::find_device($h->{to});
 
+	$from_id = 0;
+	$to_id = 0;
+
+print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message}) (from_id = $from_id) (to_id = $to_id}\n";
+
 	if ($from_device->{id} eq $h->{from}) { $from_id = 1;}
 	if ($to_device->{id} eq $h->{to}) { $to_id = 1;}
 
-	print "I got (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message}) (from_id = $from_id) (to_id = $to_id}\n";
+	if (($h->{from} eq "") and ($h->{to} eq "")) {
+		print "Ignoring status report from unknown to unknown: (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message}) (from_id = $from_id) (to_id = $to_id}\n";
+		return;
+	}
+
+	if (($h->{from} ne "") and ($h->{to} ne "manager")) {
+		protocol_error($h, "Error: Someone sent a message from a device by name."); 
+		print "Ignoring status report from device by name to unknown: (topic = $h->{topic} (from = $h->{from}) (to = $h->{to}) (command = $h->{command}) (params = $h->{params})  (message = $h->{message}) (from_id = $from_id) (to_id = $to_id}\n";
+		return;
+	}
+
 
 #I got (topic = Diehl-raw/60:01:94:0e:87:14/tst/digitalwrite/16 (from = ) (to = ) (command = ) (params = )  (message = 1) (from_id = 1) (to_id = }
 
