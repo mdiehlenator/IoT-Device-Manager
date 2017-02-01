@@ -15,7 +15,6 @@ sub	read_devices {
 
 		$device = read_device($_);
 		add_device($device);
-
 		main::see($device->{core}->{id}, 1);
 	}
 }
@@ -67,7 +66,7 @@ sub	find_device {
 		return $devices[$device_by_name{$which}];
 	}
 
-	return "";
+	return "NA";
 }
 
 return 1;

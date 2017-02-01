@@ -15,12 +15,12 @@ sub     publish {
 	my($topic, $message) = @_;
 	my($cv);
 
+	print "Publish: ($topic) -> ($message)\n";
+
 	$cv = $mqtt->publish("topic" => $topic, "message" => $message);
 	$cv->recv;
 
 	$sent{$topic}++;
-
-	print "Publish: ($topic) -> ($message)\n";
 }
 
 sub	startup {
